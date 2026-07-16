@@ -1,19 +1,31 @@
 import 'dotenv/config';
 import { pool } from './databases/connection';
+import { LeitorPrompt } from './utils/leitorPrompt';
+import { MenuPrincipal } from './menus/menuPrincipal';
 
-console.log('Aplicação iniciada - main.ts.');
+console.log('Aplicação iniciada.');
 
-async function main() {
+async function inicializar() {
+    const prompt = new LeitorPrompt();
+    const menuPrincipal = new MenuPrincipal(prompt);
+
     try {
-        const result = await pool.query('SELECT NOW()');
-        console.log('Conexão com o BD estabelecida com sucesso!');
-        console.log(result.rows[0]);
+        const conexaoBD = await pool.query('SELECT NOW()');
+        console.log('Conecxão com o banco de dados estabelecida.');
+        console.log(conexaoBD.rows[0]);
 
-    } catch (err) {
-        console.error('Erro ao conectar no banco:', err);
+        const encerrouPeloUsuario = await menuPrincipal.iniciar();
+
+        if (encerrouPeloUsuario) {
+            console.log('Encerrando a aplicação. Obrigado por utilizar o BookStore Manager!');
+        }
+    } catch (erro) {
+        console.error('Ocorreu um erro crítico na aplicação:', erro);
     } finally {
+        prompt.fecharLeitor();
         await pool.end();
+        process.exit(0);
     }
 }
 
-main();
+inicializar();

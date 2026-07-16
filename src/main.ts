@@ -2,16 +2,18 @@ import 'dotenv/config';
 import { pool } from './databases/connection';
 import { LeitorPrompt } from './utils/leitorPrompt';
 import { MenuPrincipal } from './menus/menuPrincipal';
+import { AutorController } from './controllers/AutorController';
 
 console.log('Aplicação iniciada.');
 
 async function inicializar() {
     const prompt = new LeitorPrompt();
-    const menuPrincipal = new MenuPrincipal(prompt);
+    const autorController = new AutorController();
+    const menuPrincipal = new MenuPrincipal(prompt, autorController);
 
     try {
         const conexaoBD = await pool.query('SELECT NOW()');
-        console.log('Conecxão com o banco de dados estabelecida.');
+        console.log('Conexão com o banco de dados estabelecida.');
         console.log(conexaoBD.rows[0]);
 
         const encerrouPeloUsuario = await menuPrincipal.iniciar();

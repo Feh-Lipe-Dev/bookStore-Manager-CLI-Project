@@ -13,7 +13,7 @@ async function inicializar() {
     const prompt = new LeitorPrompt();
     const autorController = new AutorController();
     const livroController = new LivroController();
-
+  
     const menuAutores = new MenuAutores(prompt, autorController);
     const menuLivros = new MenuLivros(prompt, livroController);
     const menuPrincipal = new MenuPrincipal(prompt, menuAutores, menuLivros);

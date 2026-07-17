@@ -9,18 +9,21 @@ import { ValidadorEntrada } from '../utils/validadorEntrada';
 import { MenuAutores } from './menuAutores';
 import { MenuLivros } from './menuLivros';
 import { MenuClientes } from './menuClientes';
+import { MenuEmprestimos } from './menuEmprestimos';
 
 export class MenuPrincipal {
     private prompt: LeitorPrompt;
     private menuAutores: MenuAutores;
     private menuLivros: MenuLivros;
     private menuClientes: MenuClientes;
+    private menuEmprestimos: MenuEmprestimos;
 
-    constructor(prompt: LeitorPrompt, menuAutores: MenuAutores, menuLivros: MenuLivros, menuClientes: MenuClientes) {
+    constructor(prompt: LeitorPrompt, menuAutores: MenuAutores, menuLivros: MenuLivros, menuClientes: MenuClientes, menuEmprestimos: MenuEmprestimos) {
         this.prompt = prompt;
         this.menuAutores = menuAutores;
         this.menuLivros = menuLivros;
         this.menuClientes = menuClientes;
+        this.menuEmprestimos = menuEmprestimos;
     }
 
     private mostrarOpcoes(): void {
@@ -59,8 +62,7 @@ export class MenuPrincipal {
                 await this.menuClientes.iniciar();
                 break;
             case 4:
-                this.mostrarSubmenu('Menu de Empréstimos', ['Realizar empréstimo', 'Devolver empréstimo', 'Listar empréstimos']);
-                await this.aguardarRetorno();
+                await this.menuEmprestimos.iniciar();
                 break;
             case 5:
                 this.mostrarSubmenu('Menu de Relatórios', ['Relatório geral', 'Relatório por autor', 'Relatório por cliente']);

@@ -3,13 +3,15 @@ import { pool } from './databases/connection';
 import { LeitorPrompt } from './utils/leitorPrompt';
 import { MenuPrincipal } from './menus/menuPrincipal';
 import { AutorController } from './controllers/AutorController';
+import { LivroController } from './controllers/LivroController';
 
 console.log('Aplicação iniciada.');
 
 async function inicializar() {
     const prompt = new LeitorPrompt();
     const autorController = new AutorController();
-    const menuPrincipal = new MenuPrincipal(prompt, autorController);
+    const livroController = new LivroController();
+    const menuPrincipal = new MenuPrincipal(prompt, autorController, livroController);
 
     try {
         const conexaoBD = await pool.query('SELECT NOW()');

@@ -1,13 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MenuPrincipal } from '../src/menus/menuPrincipal';
+import { MenuAutores } from '../src/menus/menuAutores';
+import { MenuLivros } from '../src/menus/menuLivros';
 import { LeitorPrompt } from '../src/utils/leitorPrompt';
 
-test('entra no submenu de autores ao escolher a opção 1', async () => {
+test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
+    const promptFalso = {
+        perguntar: async () => '0',
+    } as unknown as LeitorPrompt;
+
+    const menuAutoresFalso = {} as MenuAutores;
+    const menuLivrosFalso = {} as MenuLivros;
+
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+    const encerrou = await menu.iniciar();
+
+    assert.equal(encerrou, true);
+});
+
+test('redireciona para menuAutores ao escolher opção 1', async () => {
     const linhas: string[] = [];
     const logOriginal = console.log;
     const clearOriginal = console.clear;
-    const respostas = ['1', '', '0'];
+    const respostas = ['1', '0'];
     let indice = 0;
 
     console.log = (...args: unknown[]) => {
@@ -24,24 +40,50 @@ test('entra no submenu de autores ao escolher a opção 1', async () => {
             },
         } as unknown as LeitorPrompt;
 
-        const menu = new MenuPrincipal(promptFalso);
-        const encerrou = await menu.iniciar();
+        let iniciarAutoresChamado = false;
 
-        assert.equal(encerrou, true);
-        assert.ok(linhas.some((linha) => linha.includes('Menu de Autores')));
+        const menuAutoresFalso = {
+            iniciar: async () => {
+                iniciarAutoresChamado = true;
+            },
+        } as unknown as MenuAutores;
+
+        const menuLivrosFalso = {} as MenuLivros;
+
+        const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+        await menu.iniciar();
+
+        assert.equal(iniciarAutoresChamado, true);
     } finally {
         console.log = logOriginal;
         console.clear = clearOriginal;
     }
 });
 
-test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
+test('redireciona para menuLivros ao escolher opção 2', async () => {
+    const respostas = ['2', '0'];
+    let indice = 0;
+
     const promptFalso = {
-        perguntar: async () => '0',
+        perguntar: async () => {
+            const resposta = respostas[indice] ?? '';
+            indice += 1;
+            return resposta;
+        },
     } as unknown as LeitorPrompt;
 
-    const menu = new MenuPrincipal(promptFalso);
-    const encerrou = await menu.iniciar();
+    let iniciarLivrosChamado = false;
 
-    assert.equal(encerrou, true);
+    const menuAutoresFalso = {} as MenuAutores;
+
+    const menuLivrosFalso = {
+        iniciar: async () => {
+            iniciarLivrosChamado = true;
+        },
+    } as unknown as MenuLivros;
+
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+    await menu.iniciar();
+
+    assert.equal(iniciarLivrosChamado, true);
 });

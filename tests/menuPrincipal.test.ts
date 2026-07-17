@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { MenuPrincipal } from '../src/menus/menuPrincipal';
 import { MenuAutores } from '../src/menus/menuAutores';
 import { MenuLivros } from '../src/menus/menuLivros';
+import { MenuClientes } from '../src/menus/menuClientes';
 import { LeitorPrompt } from '../src/utils/leitorPrompt';
 
 test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
@@ -12,8 +13,9 @@ test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
 
     const menuAutoresFalso = {} as MenuAutores;
     const menuLivrosFalso = {} as MenuLivros;
+    const menuClientesFalso = {} as MenuClientes;
 
-    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso);
     const encerrou = await menu.iniciar();
 
     assert.equal(encerrou, true);
@@ -49,8 +51,9 @@ test('redireciona para menuAutores ao escolher opção 1', async () => {
         } as unknown as MenuAutores;
 
         const menuLivrosFalso = {} as MenuLivros;
+        const menuClientesFalso = {} as MenuClientes;
 
-        const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+        const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso);
         await menu.iniciar();
 
         assert.equal(iniciarAutoresChamado, true);
@@ -82,7 +85,9 @@ test('redireciona para menuLivros ao escolher opção 2', async () => {
         },
     } as unknown as MenuLivros;
 
-    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso);
+    const menuClientesFalso = {} as MenuClientes;
+
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso);
     await menu.iniciar();
 
     assert.equal(iniciarLivrosChamado, true);

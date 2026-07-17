@@ -4,8 +4,10 @@ import { LeitorPrompt } from './utils/leitorPrompt';
 import { MenuPrincipal } from './menus/menuPrincipal';
 import { MenuAutores } from './menus/menuAutores';
 import { MenuLivros } from './menus/menuLivros';
+import { MenuClientes } from './menus/menuClientes';
 import { AutorController } from './controllers/AutorController';
 import { LivroController } from './controllers/LivroController';
+import { ClienteController } from './controllers/ClienteController';
 
 console.log('Aplicação iniciada.');
 
@@ -13,10 +15,12 @@ async function inicializar() {
     const prompt = new LeitorPrompt();
     const autorController = new AutorController();
     const livroController = new LivroController();
+    const clienteController = new ClienteController();
   
     const menuAutores = new MenuAutores(prompt, autorController);
     const menuLivros = new MenuLivros(prompt, livroController);
-    const menuPrincipal = new MenuPrincipal(prompt, menuAutores, menuLivros);
+    const menuClientes = new MenuClientes(prompt, clienteController);
+    const menuPrincipal = new MenuPrincipal(prompt, menuAutores, menuLivros, menuClientes);
 
     try {
         const conexaoBD = await pool.query('SELECT NOW()');

@@ -1,33 +1,20 @@
 /*
-    #MenuPrincipal
-    - realiza a interação com o terminal e aciona as ações do sistema
-    - mantém o menu ativo até que o usuário decida encerrar a aplicação
+    #MenuAutores
+    - gerencia o submenu de autores (CRUD)
+    - recebe prompt e autorController via injeção de dependência
 */
 
 import { LeitorPrompt } from '../utils/leitorPrompt';
 import { ValidadorEntrada } from '../utils/validadorEntrada';
 import { AutorController } from '../controllers/AutorController';
 
-export class MenuPrincipal {
+export class MenuAutores {
     private prompt: LeitorPrompt;
     private autorController: AutorController;
 
     constructor(prompt: LeitorPrompt, autorController: AutorController) {
         this.prompt = prompt;
         this.autorController = autorController;
-    }
-
-    private mostrarOpcoes(): void {
-        console.log('\n====================================');
-        console.log('       BOOKSTORE MANAGER CLI        ');
-        console.log('====================================');
-        console.log('1. Autores [Gerenciamento]');
-        console.log('2. Livros [Gerenciamento]');
-        console.log('3. Clientes [Gerenciamento]');
-        console.log('4. Empréstimos [Realizar/Devolver]');
-        console.log('5. Relatórios [Estatísticas]');
-        console.log('0. Encerrar Aplicação');
-        console.log('====================================');
     }
 
     private mostrarSubmenu(titulo: string, opcoes: string[]): void {
@@ -209,7 +196,7 @@ export class MenuPrincipal {
         }
     }
 
-    private async processarSubmenuAutores(opcao: number): Promise<void> {
+    private async processarSubmenu(opcao: number): Promise<void> {
         switch (opcao) {
             case 1:
                 await this.listarAutores();
@@ -229,67 +216,12 @@ export class MenuPrincipal {
         }
     }
 
-    private async abrirModulo(opcao: number): Promise<void> {
-        switch (opcao) {
-            case 1:
-                await this.moduloAutores();
-                break;
-            case 2:
-                this.mostrarSubmenu('Menu de Livros', ['Listar livros', 'Cadastrar livro', 'Editar livro', 'Excluir livro']);
-                await this.aguardarRetorno();
-                break;
-            case 3:
-                this.mostrarSubmenu('Menu de Clientes', ['Listar clientes', 'Cadastrar cliente', 'Editar cliente', 'Excluir cliente']);
-                await this.aguardarRetorno();
-                break;
-            case 4:
-                this.mostrarSubmenu('Menu de Empréstimos', ['Realizar empréstimo', 'Devolver empréstimo', 'Listar empréstimos']);
-                await this.aguardarRetorno();
-                break;
-            case 5:
-                this.mostrarSubmenu('Menu de Relatórios', ['Relatório geral', 'Relatório por autor', 'Relatório por cliente']);
-                await this.aguardarRetorno();
-                break;
-            default:
-                console.log('--> Opção não reconhecida.');
-                await this.aguardarRetorno();
-                break;
-        }
-    }
-
-    private async moduloAutores(): Promise<void> {
+    public async iniciar(): Promise<void> {
         let executando = true;
 
         while (executando) {
             console.clear();
             this.mostrarSubmenu('Menu de Autores', ['Listar autores', 'Buscar autor por ID', 'Cadastrar autor', 'Editar autor', 'Excluir autor']);
-            const entrada = await this.prompt.perguntar('Escolha uma opção: ');
-            const opcao = ValidadorEntrada.validarOpcaoMenu(entrada, 0, 5);
-
-            if (opcao === null) {
-                console.clear();
-                console.log('\x1b[31m%s\x1b[0m', `Opção inválida: "${entrada || 'vazia'}". Digite um número de 0 a 4.`);
-                await this.aguardarRetorno();
-                continue;
-            }
-
-            if (opcao === 0) {
-                executando = false;
-                continue;
-            }
-
-            await this.processarSubmenuAutores(opcao);
-            await this.aguardarRetorno();
-        }
-    }
-
-    public async iniciar(): Promise<boolean> {
-        let executando = true;
-        let encerradoPeloUsuario = false;
-
-        while (executando) {
-            console.clear();
-            this.mostrarOpcoes();
             const entrada = await this.prompt.perguntar('Escolha uma opção: ');
             const opcao = ValidadorEntrada.validarOpcaoMenu(entrada, 0, 5);
 
@@ -301,14 +233,12 @@ export class MenuPrincipal {
             }
 
             if (opcao === 0) {
-                encerradoPeloUsuario = true;
                 executando = false;
                 continue;
             }
 
-            await this.abrirModulo(opcao);
+            await this.processarSubmenu(opcao);
+            await this.aguardarRetorno();
         }
-
-        return encerradoPeloUsuario;
     }
 }

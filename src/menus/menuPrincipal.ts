@@ -10,6 +10,7 @@ import { MenuAutores } from './menuAutores';
 import { MenuLivros } from './menuLivros';
 import { MenuClientes } from './menuClientes';
 import { MenuEmprestimos } from './menuEmprestimos';
+import { MenuRelatorios } from './menuRelatorios';
 
 export class MenuPrincipal {
     private prompt: LeitorPrompt;
@@ -17,13 +18,15 @@ export class MenuPrincipal {
     private menuLivros: MenuLivros;
     private menuClientes: MenuClientes;
     private menuEmprestimos: MenuEmprestimos;
+    private menuRelatorios: MenuRelatorios;
 
-    constructor(prompt: LeitorPrompt, menuAutores: MenuAutores, menuLivros: MenuLivros, menuClientes: MenuClientes, menuEmprestimos: MenuEmprestimos) {
+    constructor(prompt: LeitorPrompt, menuAutores: MenuAutores, menuLivros: MenuLivros, menuClientes: MenuClientes, menuEmprestimos: MenuEmprestimos, menuRelatorios: MenuRelatorios) {
         this.prompt = prompt;
         this.menuAutores = menuAutores;
         this.menuLivros = menuLivros;
         this.menuClientes = menuClientes;
         this.menuEmprestimos = menuEmprestimos;
+        this.menuRelatorios = menuRelatorios;
     }
 
     private mostrarOpcoes(): void {
@@ -65,8 +68,7 @@ export class MenuPrincipal {
                 await this.menuEmprestimos.iniciar();
                 break;
             case 5:
-                this.mostrarSubmenu('Menu de Relatórios', ['Relatório geral', 'Relatório por autor', 'Relatório por cliente']);
-                await this.aguardarRetorno();
+                await this.menuRelatorios.iniciar();
                 break;
             default:
                 console.log('--> Opção não reconhecida.');

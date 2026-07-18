@@ -5,6 +5,7 @@ import { MenuAutores } from '../src/menus/menuAutores';
 import { MenuLivros } from '../src/menus/menuLivros';
 import { MenuClientes } from '../src/menus/menuClientes';
 import { MenuEmprestimos } from '../src/menus/menuEmprestimos';
+import { MenuRelatorios } from '../src/menus/menuRelatorios';
 import { LeitorPrompt } from '../src/utils/leitorPrompt';
 
 test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
@@ -16,8 +17,9 @@ test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {
     const menuLivrosFalso = {} as MenuLivros;
     const menuClientesFalso = {} as MenuClientes;
     const menuEmprestimosFalso = {} as MenuEmprestimos;
+    const menuRelatoriosFalso = {} as MenuRelatorios;
 
-    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso);
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso, menuRelatoriosFalso);
     const encerrou = await menu.iniciar();
 
     assert.equal(encerrou, true);
@@ -55,8 +57,9 @@ test('redireciona para menuAutores ao escolher opção 1', async () => {
         const menuLivrosFalso = {} as MenuLivros;
         const menuClientesFalso = {} as MenuClientes;
         const menuEmprestimosFalso = {} as MenuEmprestimos;
+        const menuRelatoriosFalso = {} as MenuRelatorios;
 
-        const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso);
+        const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso, menuRelatoriosFalso);
         await menu.iniciar();
 
         assert.equal(iniciarAutoresChamado, true);
@@ -90,8 +93,9 @@ test('redireciona para menuLivros ao escolher opção 2', async () => {
 
     const menuClientesFalso = {} as MenuClientes;
     const menuEmprestimosFalso = {} as MenuEmprestimos;
+    const menuRelatoriosFalso = {} as MenuRelatorios;
 
-    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso);
+    const menu = new MenuPrincipal(promptFalso, menuAutoresFalso, menuLivrosFalso, menuClientesFalso, menuEmprestimosFalso, menuRelatoriosFalso);
     await menu.iniciar();
 
     assert.equal(iniciarLivrosChamado, true);

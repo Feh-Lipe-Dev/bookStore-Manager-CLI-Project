@@ -6,10 +6,12 @@ import { MenuAutores } from './menus/menuAutores';
 import { MenuLivros } from './menus/menuLivros';
 import { MenuClientes } from './menus/menuClientes';
 import { MenuEmprestimos } from './menus/menuEmprestimos';
+import { MenuRelatorios } from './menus/menuRelatorios';
 import { AutorController } from './controllers/AutorController';
 import { LivroController } from './controllers/LivroController';
 import { ClienteController } from './controllers/ClienteController';
 import { EmprestimoController } from './controllers/EmprestimoController';
+import { RelatorioController } from './controllers/RelatorioController';
 
 console.log('Aplicação iniciada.');
 
@@ -19,12 +21,14 @@ async function inicializar() {
     const livroController = new LivroController();
     const clienteController = new ClienteController();
     const emprestimoController = new EmprestimoController();
+    const relatorioController = new RelatorioController();
   
     const menuAutores = new MenuAutores(prompt, autorController);
     const menuLivros = new MenuLivros(prompt, livroController);
     const menuClientes = new MenuClientes(prompt, clienteController);
     const menuEmprestimos = new MenuEmprestimos(prompt, emprestimoController);
-    const menuPrincipal = new MenuPrincipal(prompt, menuAutores, menuLivros, menuClientes, menuEmprestimos);
+    const menuRelatorios = new MenuRelatorios(prompt, relatorioController);
+    const menuPrincipal = new MenuPrincipal(prompt, menuAutores, menuLivros, menuClientes, menuEmprestimos, menuRelatorios);
 
     try {
         const conexaoBD = await pool.query('SELECT NOW()');

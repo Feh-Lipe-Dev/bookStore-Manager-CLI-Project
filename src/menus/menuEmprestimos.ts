@@ -145,6 +145,48 @@ export class MenuEmprestimos {
         }
     }
 
+    private async excluirEmprestimo(): Promise<void> {
+        console.log('\n--- Excluir Empréstimo ---');
+        const idStr = await this.prompt.perguntar('Digite o ID do emprestimo a excluir: ');
+        const id = parseInt(idStr, 10);
+
+        if (isNaN(id) || id <= 0) {
+            console.log('\x1b[31m%s\x1b[0m', 'ID inválido.');
+            return;
+        }
+
+        try {
+            const emprestimo = await this.emprestimoController.buscarEmprestimoPorId(id);
+
+            if (!emprestimo) {
+                console.log('\x1b[33m%s\x1b[0m', 'Empréstimo não encontrado.');
+                return;
+            }
+
+            const dataEmprestimo = new Date(emprestimo.data_emprestimo).toLocaleDateString('pt-BR');
+            const dataDevolucao = emprestimo.data_devolucao
+                ? new Date(emprestimo.data_devolucao).toLocaleDateString('pt-BR')
+                : 'Pendente';
+            console.log(`Empréstimo encontrado: Livro "${emprestimo.titulo_livro}" para ${emprestimo.nome_cliente} | Retirado em: ${dataEmprestimo} | Devolução: ${dataDevolucao}`);
+            const confirmacao = await this.prompt.perguntar('Tem certeza que deseja excluir? (s/n): ');
+
+            if (confirmacao.toLowerCase() !== 's') {
+                console.log('\x1b[33m%s\x1b[0m', 'Exclusão cancelada.');
+                return;
+            }
+
+            const excluido = await this.emprestimoController.excluirEmprestimo(id);
+
+            if (excluido) {
+                console.log('\x1b[32m%s\x1b[0m', '\nEmpréstimo excluído com sucesso!');
+            } else {
+                console.log('\x1b[31m%s\x1b[0m', '\nNão foi possível excluir o empréstimo.');
+            }
+        } catch (erro) {
+            console.error('\x1b[31m%s\x1b[0m', `\nErro: ${(erro as Error).message}`);
+        }
+    }
+
     private async processarSubmenu(opcao: number): Promise<void> {
         switch (opcao) {
             case 1:
@@ -159,6 +201,9 @@ export class MenuEmprestimos {
             case 4:
                 await this.buscarEmprestimoPorId();
                 break;
+            case 5:
+                await this.excluirEmprestimo();
+                break;
         }
     }
 
@@ -167,13 +212,13 @@ export class MenuEmprestimos {
 
         while (executando) {
             console.clear();
-            this.mostrarSubmenu('Menu de Empréstimos', ['Realizar empréstimo', 'Devolver empréstimo', 'Listar empréstimos', 'Buscar empréstimo por ID']);
+            this.mostrarSubmenu('Menu de Empréstimos', ['Realizar empréstimo', 'Devolver empréstimo', 'Listar empréstimos', 'Buscar empréstimo por ID', 'Excluir empréstimo']);
             const entrada = await this.prompt.perguntar('Escolha uma opção: ');
-            const opcao = ValidadorEntrada.validarOpcaoMenu(entrada, 0, 4);
+            const opcao = ValidadorEntrada.validarOpcaoMenu(entrada, 0, 5);
 
             if (opcao === null) {
                 console.clear();
-                console.log('\x1b[31m%s\x1b[0m', `Opção inválida: "${entrada || 'vazia'}". Digite um número de 0 a 3.`);
+                console.log('\x1b[31m%s\x1b[0m', `Opção inválida: "${entrada || 'vazia'}". Digite um número de 0 a 5.`);
                 await this.aguardarRetorno();
                 continue;
             }

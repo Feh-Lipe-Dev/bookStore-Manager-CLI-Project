@@ -16,7 +16,7 @@
     "postgresql",
     "cli"
   ],
-  "author": "Seu nome",
+  "author": "Felipe Goncalves",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^24.2.0",

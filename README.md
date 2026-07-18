@@ -81,38 +81,34 @@ npm start
 
 A aplicação segue uma arquitetura em camadas com injeção de dependência via construtores:
 
-```
-┌─────────────────────────────────────────────────┐
-│                    main.ts                      │
-│              (Composition Root)                 │
-│   Instancia e injeta todas as dependências      │
-└──────────────────────┬──────────────────────────┘
-                       │
-              ┌────────▼────────┐
-              │  MenuPrincipal  │  ← Roteador principal
-              └────────┬────────┘
-                       │
-        ┌──────────────┼──────────────────┐
-        │              │                  │
-  ┌─────▼─────┐ ┌─────▼─────┐    ┌──────▼───────┐
-  │MenuAutores│ │MenuLivros │    │MenuRelatorios│  ← Menus (interação CLI)
-  └─────┬─────┘ └─────┬─────┘    └──────┬───────┘
-        │              │                  │
-  ┌─────▼─────┐ ┌─────▼─────┐    ┌──────▼──────┐
-  │ AutorCtrl │ │ LivroCtrl │    │RelatorioCtrl│  ← Controllers (validação)
-  └─────┬─────┘ └─────┬─────┘    └──────┬──────┘
-        │             │                 │
-  ┌─────▼─────┐ ┌─────▼─────┐    ┌──────▼──────┐
-  │  AutorSvc │ │  LivroSvc │    │RelatorioSvc │  ← Services (regras de negócio)
-  └─────┬─────┘ └─────┬─────┘    └──────┬──────┘
-        │             │                 │
-  ┌─────▼─────┐ ┌─────▼─────┐    ┌──────▼──────┐
-  │ AutorRepo │ │ ivroRepo  │    │RelatorioRepo│  ← Repositories (acesso ao BD)
-  └─────┬─────┘ └─────┬─────┘    └──────┬──────┘
-        │             │                 │
-  ┌─────▼──────────────▼──────────────────▼──────┐
-  │           PostgreSQL (connection.ts)         │  ← Database
-  └──────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A["main.ts<br/>Composition Root"] --> B["MenuPrincipal"]
+    B --> C["MenuAutores"]
+    B --> D["MenuLivros"]
+    B --> E["MenuClientes"]
+    B --> F["MenuEmprestimos"]
+    B --> G["MenuRelatorios"]
+    C --> H["AutorController"]
+    D --> I["LivroController"]
+    E --> J["ClienteController"]
+    F --> K["EmprestimoController"]
+    G --> L["RelatorioController"]
+    H --> M["AutorService"]
+    I --> N["LivroService"]
+    J --> O["ClienteService"]
+    K --> P["EmprestimoService"]
+    L --> Q["RelatorioService"]
+    M --> R["AutorRepository"]
+    N --> S["LivroRepository"]
+    O --> T["ClienteRepository"]
+    P --> U["EmprestimoRepository"]
+    Q --> V["RelatorioRepository"]
+    R --> W[("PostgreSQL")]
+    S --> W
+    T --> W
+    U --> W
+    V --> W
 ```
 
 **Princípios aplicados:**
@@ -212,6 +208,9 @@ projeto-bookstore/
 ├── tests/
 │   ├── menuPrincipal.test.ts
 │   └── validadorEntrada.test.ts
+├── docs/
+│   ├── images/                   # Diagramas e imagens da documentação
+│   └── screenshots/              # Prints das funcionalidades
 ├── .env.example
 ├── .gitignore
 ├── package.json
@@ -222,68 +221,39 @@ projeto-bookstore/
 ## Exemplos de utilização
 
 ### Menu principal
-```
-====================================
-       BOOKSTORE MANAGER CLI        
-====================================
-1. Autores [Gerenciamento]
-2. Livros [Gerenciamento]
-3. Clientes [Gerenciamento]
-4. Empréstimos [Realizar/Devolver]
-5. Relatórios [Estatísticas]
-0. Encerrar Aplicação
-====================================
-Escolha uma opção: 
-```
+<p align="center">
+  <img src="docs/screenshots/menu-bookStore.png" alt="Menu Principal" width="600">
+</p>
 
 ### Cadastrando um autor
-```
-===== Autores =====
-1. Cadastrar autor
-2. Listar autores
-3. Buscar autor por ID
-4. Atualizar autor
-5. Excluir autor
-0. Voltar ao menu principal
-====================
-Escolha uma opção: 1
-
-Nome: Machado de Assis
-Data de nascimento (AAAA-MM-DD): 1839-06-21
-Nacionalidade: Brasileiro
-
---> Autor cadastrado com sucesso! (ID: 1)
-```
+<p align="center">
+  <img src="docs/screenshots/autor-cadastro.png" alt="Cadastrando um autor" width="600">
+</p>
 
 ### Listando livros
-```
-===== Livros - Lista =====
-ID | Título                          | Autor                | Qtd
- 1 | Dom Casmurro                    | Machado de Assis     |   5
- 2 | O Alquimista                    | Paulo Coelho         |   3
- 3 | Clean Code                      | Robert C. Martin     |   7
-=======================================
-```
+<p align="center">
+  <img src="docs/screenshots/livros-listar.png" alt="Listando livros" width="600">
+</p>
+
+### Editando um cliente
+<p align="center">
+  <img src="docs/screenshots/cliente-editar.png" alt="Editando um cliente" width="600">
+</p>
 
 ### Realizando um empréstimo
-```
-=== Empréstimo de Livro ===
-ID do livro: 1
-ID do cliente: 1
-
---> Empréstimo realizado com sucesso! (ID: 1)
---> Livro "Dom Casmurro" — estoque: 5 → 4
-```
+<p align="center">
+  <img src="docs/screenshots/emprestimo-realizado.png" alt="Realizando um empréstimo" width="600">
+</p>
 
 ### Gerando um relatório
-```
-===== Empréstimos Ativos =====
-ID | Livro                | Cliente          | Data Empréstimo | Status
- 1 | Dom Casmurro         | João Silva       | 2026-07-15      | Ativo
- 2 | Clean Code           | Maria Santos     | 2026-07-16      | Ativo
-==============================
-Total: 2 empréstimo(s) ativo(s)
-```
+<p align="center">
+  <img src="docs/screenshots/relatório-emprestimos-ativos.png" alt="Gerando um relatório" width="600">
+</p>
+
+### Excluindo um livro
+<p align="center">
+  <img src="docs/screenshots/exclusao-livro.png" alt="Excluindo um livro" width="600">
+</p>
 
 ## Integrantes da equipe
 

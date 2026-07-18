@@ -6,11 +6,11 @@
 
 import { LeitorPrompt } from '../utils/leitorPrompt';
 import { ValidadorEntrada } from '../utils/validadorEntrada';
-import { MenuAutores } from './menuAutores';
-import { MenuLivros } from './menuLivros';
-import { MenuClientes } from './menuClientes';
-import { MenuEmprestimos } from './menuEmprestimos';
-import { MenuRelatorios } from './menuRelatorios';
+import { MenuAutores } from './MenuAutores';
+import { MenuLivros } from './MenuLivros';
+import { MenuClientes } from './MenuClientes';
+import { MenuEmprestimos } from './MenuEmprestimos';
+import { MenuRelatorios } from './MenuRelatorios';
 
 export class MenuPrincipal {
     private prompt: LeitorPrompt;

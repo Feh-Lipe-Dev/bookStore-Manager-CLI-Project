@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import { pool } from './databases/connection';
 import { LeitorPrompt } from './utils/leitorPrompt';
-import { MenuPrincipal } from './menus/menuPrincipal';
-import { MenuAutores } from './menus/menuAutores';
-import { MenuLivros } from './menus/menuLivros';
-import { MenuClientes } from './menus/menuClientes';
-import { MenuEmprestimos } from './menus/menuEmprestimos';
-import { MenuRelatorios } from './menus/menuRelatorios';
+import { MenuPrincipal } from './menus/MenuPrincipal';
+import { MenuAutores } from './menus/MenuAutores';
+import { MenuLivros } from './menus/MenuLivros';
+import { MenuClientes } from './menus/MenuClientes';
+import { MenuEmprestimos } from './menus/MenuEmprestimos';
+import { MenuRelatorios } from './menus/MenuRelatorios';
 import { AutorController } from './controllers/AutorController';
 import { LivroController } from './controllers/LivroController';
 import { ClienteController } from './controllers/ClienteController';
@@ -22,7 +22,7 @@ async function inicializar() {
     const clienteController = new ClienteController();
     const emprestimoController = new EmprestimoController();
     const relatorioController = new RelatorioController();
-  
+
     const menuAutores = new MenuAutores(prompt, autorController);
     const menuLivros = new MenuLivros(prompt, livroController);
     const menuClientes = new MenuClientes(prompt, clienteController);

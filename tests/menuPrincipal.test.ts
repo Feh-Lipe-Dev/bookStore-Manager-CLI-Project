@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MenuPrincipal } from '../src/menus/menuPrincipal';
-import { MenuAutores } from '../src/menus/menuAutores';
-import { MenuLivros } from '../src/menus/menuLivros';
-import { MenuClientes } from '../src/menus/menuClientes';
-import { MenuEmprestimos } from '../src/menus/menuEmprestimos';
-import { MenuRelatorios } from '../src/menus/menuRelatorios';
+import { MenuAutores } from '../src/menus/MenuAutores';
+import { MenuLivros } from '../src/menus/MenuLivros';
+import { MenuClientes } from '../src/menus/MenuClientes';
+import { MenuEmprestimos } from '../src/menus/MenuEmprestimos';
+import { MenuRelatorios } from '../src/menus/MenuRelatorios';
 import { LeitorPrompt } from '../src/utils/leitorPrompt';
 
 test('retorna verdadeiro quando o usuário escolhe a opção 0', async () => {

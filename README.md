@@ -57,10 +57,10 @@ PGDATABASE=bookstore_db
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/projeto-bookstore.git
+git clone https://github.com/Feh-Lipe-Dev/bookStore-Manager-CLI-Project.git
 
 # Entre na pasta do projeto
-cd projeto-bookstore
+cd cd bookStore-Manager-CLI-Project
 
 # Instale as dependências
 npm install
@@ -263,3 +263,7 @@ projeto-bookstore/
 ## Link do Kanban
 
 - [Backlog Kanban](https://docs.google.com/spreadsheets/d/1eyhQg5D09Dkh9YOYOm4XztkUEm7CALF1QYjHYbKKFRw/edit?usp=sharing)
+
+## Vídeo
+
+- [Apresentação](https://youtu.be/5m7bXi2ioEk)
